@@ -80,10 +80,10 @@ namespace Tic_tac_Toe_WPF.ViewModel
             int col = int.Parse(o!.ToString()!.Split(",")[1]);
             try
             {
-                gm.Grid.InsertSymbol(_currentPlayer, row, col);
+                gm.Grid.InsertSymbol(CurrentPlayer, row, col);
 
                 var index = col + (row * 3);
-                GameGrid[index] = _currentPlayer.ToString();
+                GameGrid[index] = CurrentPlayer.ToString();
                 OnPropertyChanged(nameof(GameGrid));
 
                 SetNextPlayer();
