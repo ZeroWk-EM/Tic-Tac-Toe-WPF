@@ -15,43 +15,59 @@ namespace Tic_tac_Toe_WPF.ViewModel
     {
         GameLogic gm = new();
         private Symbol _currentPlayer = Symbol.X;
-        private Symbol[]? _gameGrid = null;
-        private Player _player1 = new Player();
-        private Player _player2 = new Player();
+        private string[] _gameGrid = new string[9];
+        private readonly Player _player1 = new();
+        private readonly Player _player2 = new();
+        private int _counterClick = 0;
         public event PropertyChangedEventHandler? PropertyChanged;
         public DelegateCommand FillCellCommand { get; }
 
         public MainViewModel()
         {
             FillCellCommand = new DelegateCommand(FillCell, IsFillebleCell);
-            _gameGrid = new Symbol[9];
             _player1.Symbol = Symbol.X;
             _player2.Symbol = Symbol.O;
         }
 
         private void SetNextPlayer()
         {
-            if (_currentPlayer == Symbol.X)
+            _counterClick++;
+            if (_counterClick != 9)
             {
-                /* if (gm.IterativeCheckWinner(_player1))
-                 {
-                     MessageBox.Show($"Ha Vinto {_currentPlayer}");
-                     App.Current.Shutdown();
-                 }*/
-                _currentPlayer = Symbol.O;
+                if (_currentPlayer == Symbol.X)
+                {
+                    if (gm.IterativeCheckWinner(_player1))
+                    {
+                        MessageBox.Show($"Ha Vinto {_currentPlayer}", "VITTORIA");
+                        App.Current.Shutdown();
+                    }
+                    _currentPlayer = Symbol.O;
+                    OnPropertyChanged(nameof(CurrentPlayer));
+                }
+                else
+                {
+                    if (gm.IterativeCheckWinner(_player2))
+                    {
+                        MessageBox.Show($"Ha Vinto {_currentPlayer}", "VITTORIA");
+                        App.Current.Shutdown();
+                    }
+                    _currentPlayer = Symbol.X;
+                    OnPropertyChanged(nameof(CurrentPlayer));
+                }
             }
             else
             {
-                /*  if (gm.IterativeCheckWinner(_player2))
-                  {
-                      MessageBox.Show($"Ha Vinto {_currentPlayer}");
-                      App.Current.Shutdown();
-                  }*/
-                _currentPlayer = Symbol.X;
+                MessageBox.Show($"E' stato raggiunto un pareggio", "PARITA'");
+                App.Current.Shutdown();
             }
+
         }
 
-        public Symbol[]? GameGrid
+        public Symbol CurrentPlayer
+        {
+            get { return _currentPlayer; }
+        }
+        public string[] GameGrid
         {
 
             get { return _gameGrid; }
@@ -67,21 +83,15 @@ namespace Tic_tac_Toe_WPF.ViewModel
                 gm.Grid.InsertSymbol(_currentPlayer, row, col);
 
                 var index = col + (row * 3);
-                if (GameGrid != null)
-                {
-                    GameGrid[index] = _currentPlayer;
-                }
+                GameGrid[index] = _currentPlayer.ToString();
+                OnPropertyChanged(nameof(GameGrid));
+
                 SetNextPlayer();
             }
             catch (Exception e)
             {
                 MessageBox.Show($"{e.Message}", "Errore");
             }
-            {
-                OnPropertyChanged();
-            }
-
-
         }
 
 
