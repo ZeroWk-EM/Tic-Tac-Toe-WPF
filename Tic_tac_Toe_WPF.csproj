@@ -9,20 +9,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\circle.png" />
+    <None Remove="Assets\cross.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\Downloads\icon.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
+    <Reference Include="TicTacToeLibrary">
+      <HintPath>..\..\..\..\Tic-Tac-Toe\TicTacToeLibrary\bin\Debug\net6.0\TicTacToeLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="TicTacToeLibrary">
-      <HintPath>..\..\C# Exercises\Tic-Tac-Toe\TicTacToeLibrary\bin\Debug\net6.0\TicTacToeLibrary.dll</HintPath>
-    </Reference>
+    <Resource Include="Assets\circle.png" />
+    <Resource Include="Assets\cross.png" />
   </ItemGroup>
 
 </Project>

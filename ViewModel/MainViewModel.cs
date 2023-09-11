@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using Tic_tac_Toe_WPF.Commands;
 using TicTacToeLibrary;
 using TicTacToeLibrary.Enum;
@@ -15,7 +14,7 @@ namespace Tic_tac_Toe_WPF.ViewModel
     {
         GameLogic gm = new();
         private Symbol _currentPlayer = Symbol.X;
-        private string[] _gameGrid = new string[9];
+        private string[] _gameGrid = new string[9] {"", "", "", "", "", "", "", "", "", };
         private readonly Player _player1 = new();
         private readonly Player _player2 = new();
         private int _counterClick = 0;
@@ -24,45 +23,44 @@ namespace Tic_tac_Toe_WPF.ViewModel
 
         public MainViewModel()
         {
-            FillCellCommand = new DelegateCommand(FillCell, IsFillebleCell);
+            FillCellCommand = new DelegateCommand(FillCell);
             _player1.Symbol = Symbol.X;
             _player2.Symbol = Symbol.O;
         }
 
         private void SetNextPlayer()
         {
-            _counterClick++;
-            if (_counterClick != 9)
+            if (_currentPlayer == Symbol.X)
             {
-                if (_currentPlayer == Symbol.X)
+                if (gm.IterativeCheckWinner(_player1))
                 {
-                    if (gm.IterativeCheckWinner(_player1))
-                    {
-                        MessageBox.Show($"Ha Vinto {_currentPlayer}", "VITTORIA");
-                        App.Current.Shutdown();
-                    }
-                    _currentPlayer = Symbol.O;
-                    OnPropertyChanged(nameof(CurrentPlayer));
+                    PlayerOneWin++;
+                    ResetGame();
                 }
                 else
                 {
-                    if (gm.IterativeCheckWinner(_player2))
-                    {
-                        MessageBox.Show($"Ha Vinto {_currentPlayer}", "VITTORIA");
-                        App.Current.Shutdown();
-                    }
-                    _currentPlayer = Symbol.X;
+                    _counterClick++;
+                    _currentPlayer = Symbol.O;
                     OnPropertyChanged(nameof(CurrentPlayer));
+                    OnPropertyChanged(nameof(CounterClick));
                 }
             }
             else
             {
-                MessageBox.Show($"E' stato raggiunto un pareggio", "PARITA'");
-                App.Current.Shutdown();
-            }
-
+                if (gm.IterativeCheckWinner(_player2))
+                {
+                    PlayerTwoWin++;
+                    ResetGame();
+                }
+                else
+                {
+                    _counterClick++;
+                    _currentPlayer = Symbol.X;
+                    OnPropertyChanged(nameof(CurrentPlayer));
+                    OnPropertyChanged(nameof(CounterClick));
+                }
+                         }
         }
-
         public Symbol CurrentPlayer
         {
             get { return _currentPlayer; }
@@ -73,20 +71,51 @@ namespace Tic_tac_Toe_WPF.ViewModel
             get { return _gameGrid; }
             set { _gameGrid = value; }
         }
+        public int CounterClick
+        {
+            get { return _counterClick; }
+        }
+
+        public int PlayerOneWin
+        {
+            get
+            {
+                return _player1.CounterWin;
+            }
+            set
+            {
+                _player1.CounterWin = value;
+            }
+        }
+
+        public int PlayerTwoWin
+        {
+            get
+            {
+                return _player2.CounterWin;
+            }
+            set
+            {
+                _player2.CounterWin = value;
+            }
+        }
 
         public void FillCell(object? o)
         {
             int row = int.Parse(o!.ToString()!.Split(",")[0]);
             int col = int.Parse(o!.ToString()!.Split(",")[1]);
+            var index = col + (row * 3);
             try
             {
                 gm.Grid.InsertSymbol(CurrentPlayer, row, col);
-
-                var index = col + (row * 3);
                 GameGrid[index] = CurrentPlayer.ToString();
                 OnPropertyChanged(nameof(GameGrid));
-
                 SetNextPlayer();
+                if (_counterClick == 9)
+                {
+                    MessageBox.Show("Pareggio", "Game over");
+                    App.Current.Shutdown();
+                }
             }
             catch (Exception e)
             {
@@ -94,12 +123,22 @@ namespace Tic_tac_Toe_WPF.ViewModel
             }
         }
 
-
-        public bool IsFillebleCell(object? o)
+        public void ResetGame()
         {
-            return true;
+            _gameGrid = new string[9] { "", "", "", "", "", "", "", "", "", };
+            _counterClick = 0;
+            _currentPlayer = Symbol.X;
+            gm.Grid.ResetGrid();
+            OnPropertyChanged(nameof(GameGrid));
+            OnPropertyChanged(nameof(PlayerOneWin));
+            OnPropertyChanged(nameof(PlayerTwoWin));
+            OnPropertyChanged(nameof(CounterClick));
         }
 
+        public static void CloseGame()
+        {
+            App.Current.Shutdown();
+        }
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
