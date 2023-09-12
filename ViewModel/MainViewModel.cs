@@ -18,6 +18,7 @@ namespace Tic_tac_Toe_WPF.ViewModel
         private readonly Player _player1 = new();
         private readonly Player _player2 = new();
         private int _counterClick = 0;
+        private bool _tie = false;
         public event PropertyChangedEventHandler? PropertyChanged;
         public DelegateCommand FillCellCommand { get; }
 
@@ -35,7 +36,7 @@ namespace Tic_tac_Toe_WPF.ViewModel
                 if (gm.IterativeCheckWinner(_player1))
                 {
                     PlayerOneWin++;
-                    OpenWinnerBox();
+                    OpenEndGameBox();
                 }
                 else
                 {
@@ -50,7 +51,7 @@ namespace Tic_tac_Toe_WPF.ViewModel
                 if (gm.IterativeCheckWinner(_player2))
                 {
                     PlayerTwoWin++;
-                    OpenWinnerBox();
+                    OpenEndGameBox();
                 }
                 else
                 {
@@ -113,8 +114,8 @@ namespace Tic_tac_Toe_WPF.ViewModel
                 SetNextPlayer();
                 if (_counterClick == 9)
                 {
-                    MessageBox.Show("Pareggio", "Game over");
-                    App.Current.Shutdown();
+                    _tie = true;
+                    OpenEndGameBox();
                 }
             }
             catch (Exception e)
@@ -136,13 +137,15 @@ namespace Tic_tac_Toe_WPF.ViewModel
             OnPropertyChanged(nameof(CurrentPlayer));
         }
 
-        public void OpenWinnerBox()
+        public void OpenEndGameBox()
         {
-            var result = MessageBox.Show($"Complimenti [{CurrentPlayer}] hai vinto\nVolete giocare ancora?", "Vittoria", MessageBoxButton.YesNo);
+
+            var result = MessageBox.Show($"{(_tie ? "Pareggio" : ("Complimenti ha vinto " + $"{CurrentPlayer}"))}\nVuoi giocare ancora?", $"{(_tie ? "Pareggio" : "Vittoria")}", MessageBoxButton.YesNo);
             switch (result)
             {
                 case MessageBoxResult.Yes:
                     ResetGame();
+                    _tie = false;
                     break;
                 case MessageBoxResult.No:
                     CloseGame();
