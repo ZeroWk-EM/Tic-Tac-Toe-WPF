@@ -120,7 +120,7 @@ namespace Tic_tac_Toe_WPF.ViewModel
             }
             catch (Exception e)
             {
-                MessageBox.Show($"{e.Message}", "Errore");
+                MessageBox.Show($"{e.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); ;
             }
         }
 
@@ -140,7 +140,7 @@ namespace Tic_tac_Toe_WPF.ViewModel
         public void OpenEndGameBox()
         {
 
-            var result = MessageBox.Show($"{(_tie ? "Pareggio" : ("Complimenti ha vinto " + $"{CurrentPlayer}"))}\nVuoi giocare ancora?", $"{(_tie ? "Pareggio" : "Vittoria")}", MessageBoxButton.YesNo);
+            var result = MessageBox.Show($"{(_tie ? "Tie" : ("Congratulations won " + $"{CurrentPlayer}"))}\nDo you want to play again?", $"{(_tie ? "Tie" : "Win")}", MessageBoxButton.YesNo, MessageBoxImage.Question);
             switch (result)
             {
                 case MessageBoxResult.Yes:
