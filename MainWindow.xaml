@@ -22,14 +22,14 @@
             HorizontalAlignment="Center"
             Orientation="Horizontal">
             <Label
-                Width="90"
+                Width="80"
                 VerticalAlignment="Center"
-                Content="Turno corrente " />
+                Content="Current Turn " />
             <Label
                 VerticalAlignment="Center"
                 Content="{Binding CurrentPlayer}"
                 FontWeight="Bold" />
-            <Label VerticalAlignment="Center" Content="Turno n." />
+            <Label VerticalAlignment="Center" Content="Turn n°" />
             <Label
                 VerticalAlignment="Center"
                 Content="{Binding CounterClick}"
@@ -125,7 +125,7 @@
             Orientation="Horizontal">
             <Label
                 VerticalAlignment="Center"
-                Content="Contatore delle vittorie"
+                Content="Win Counter"
                 FontWeight="Bold" />
         </StackPanel>
         <StackPanel
@@ -135,7 +135,7 @@
             <Label
                 Width="90"
                 VerticalAlignment="Center"
-                Content="Giocatore 1" />
+                Content="Player 1" />
             <Label
                 VerticalAlignment="Center"
                 Content="{Binding PlayerOneWin}"
@@ -148,7 +148,7 @@
             <Label
                 Width="90"
                 VerticalAlignment="Center"
-                Content="Giocatore 2" />
+                Content="Player 2" />
             <Label
                 VerticalAlignment="Center"
                 Content="{Binding PlayerTwoWin}"
