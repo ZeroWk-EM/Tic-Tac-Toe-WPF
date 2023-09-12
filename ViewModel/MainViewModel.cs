@@ -35,7 +35,7 @@ namespace Tic_tac_Toe_WPF.ViewModel
                 if (gm.IterativeCheckWinner(_player1))
                 {
                     PlayerOneWin++;
-                    ResetGame();
+                    OpenWinnerBox();
                 }
                 else
                 {
@@ -50,7 +50,7 @@ namespace Tic_tac_Toe_WPF.ViewModel
                 if (gm.IterativeCheckWinner(_player2))
                 {
                     PlayerTwoWin++;
-                    ResetGame();
+                    OpenWinnerBox();
                 }
                 else
                 {
@@ -134,6 +134,20 @@ namespace Tic_tac_Toe_WPF.ViewModel
             OnPropertyChanged(nameof(PlayerTwoWin));
             OnPropertyChanged(nameof(CounterClick));
             OnPropertyChanged(nameof(CurrentPlayer));
+        }
+
+        public void OpenWinnerBox()
+        {
+            var result = MessageBox.Show($"Complimenti [{CurrentPlayer}] hai vinto\nVolete giocare ancora?", "Vittoria", MessageBoxButton.YesNo);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    ResetGame();
+                    break;
+                case MessageBoxResult.No:
+                    CloseGame();
+                    break;
+            }
         }
 
         public static void CloseGame()
