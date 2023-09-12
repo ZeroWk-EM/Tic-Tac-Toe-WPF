@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <Reference Include="TicTacToeLibrary">
-      <HintPath>..\..\..\..\Tic-Tac-Toe\TicTacToeLibrary\bin\Debug\net6.0\TicTacToeLibrary.dll</HintPath>
+      <HintPath>..\..\C# Exercises\Tic-Tac-Toe\TicTacToeLibrary\bin\Debug\net6.0\TicTacToeLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
 
