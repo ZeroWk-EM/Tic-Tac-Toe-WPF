@@ -14,7 +14,7 @@ namespace Tic_tac_Toe_WPF.ViewModel
     {
         GameLogic gm = new();
         private Symbol _currentPlayer = Symbol.X;
-        private string[] _gameGrid = new string[9] {"", "", "", "", "", "", "", "", "", };
+        private string[] _gameGrid = new string[9] { "", "", "", "", "", "", "", "", "", };
         private readonly Player _player1 = new();
         private readonly Player _player2 = new();
         private int _counterClick = 0;
@@ -59,7 +59,7 @@ namespace Tic_tac_Toe_WPF.ViewModel
                     OnPropertyChanged(nameof(CurrentPlayer));
                     OnPropertyChanged(nameof(CounterClick));
                 }
-                         }
+            }
         }
         public Symbol CurrentPlayer
         {
@@ -133,6 +133,7 @@ namespace Tic_tac_Toe_WPF.ViewModel
             OnPropertyChanged(nameof(PlayerOneWin));
             OnPropertyChanged(nameof(PlayerTwoWin));
             OnPropertyChanged(nameof(CounterClick));
+            OnPropertyChanged(nameof(CurrentPlayer));
         }
 
         public static void CloseGame()
